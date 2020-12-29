@@ -109,7 +109,7 @@ public class ThumbnailFromVideoPathPlugin implements FlutterPlugin, MethodCallHa
 
     try {
       log("trying to create bitmap");
-      Bitmap bitmap = retriever.getFrameAtTime(1000 * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+      Bitmap bitmap = retriever.getFrameAtTime(1000, MediaMetadataRetriever.OPTION_NEXT_SYNC);
       log("done creating bitmap");
       return bitmap;
     } catch (RuntimeException e) {
