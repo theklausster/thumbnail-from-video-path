@@ -1,6 +1,6 @@
 name: thumbnail_from_video_path
 description: A new flutter plugin project.
-version: 1.33.8
+version: 1.34.2
 homepage: https://github.com/theklausster/thumbnail-from-video-path
 
 environment:

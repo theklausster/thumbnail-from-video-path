@@ -1,17 +1,23 @@
 package com.example.thumbnail_from_video_path;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.util.Size;
 
 import androidx.annotation.NonNull;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 
@@ -97,24 +103,21 @@ public class ThumbnailFromVideoPathPlugin implements FlutterPlugin, MethodCallHa
   }
 
   private Bitmap generateBitmap(String path, int heightFromFlutter, int widthFromFlutter) {
-    log("generateBitmap: from file path: " + path + ", height: " + heightFromFlutter + ", width: " + widthFromFlutter);
-    File videoFile = new File(path);
+
+    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+    retriever.setDataSource(path);
 
     try {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // SDK >= 21
-        Size size = new Size(widthFromFlutter, heightFromFlutter);
-        Bitmap bitmap = ThumbnailUtils.createImageThumbnail(videoFile, size, null);
-        return bitmap;
-      } else {
-        log("generateBitmap: Sorry - SDK not support, needs to be >= 21");
-        return null;
-      }
-    } catch (IOException e) {
+      log("trying to create bitmap");
+      Bitmap bitmap = retriever.getFrameAtTime(1000 * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+      log("done creating bitmap");
+      return bitmap;
+    } catch (RuntimeException e) {
       log("generateBitmap: Error while creating bitmap " + e);
       return null;
     }
-  }
 
+  }
   private byte[] readBitmap(Bitmap bitmap) {
     log("readBitmap: trying to read bitmap");
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
