@@ -127,10 +127,10 @@ public class ThumbnailFromVideoPathPlugin implements FlutterPlugin, MethodCallHa
   }
 
   private String writeToFile(String path, byte[] bytes) {
-    log("writeToFile: trying to write to file");
+    log("writeToFile: trying to write to file: " + path);
 
-    String pathFromSplit = path.split(".")[0];
-    String fileType = ".png";
+    String pathFromSplit = path.split("mp4")[0];
+    String fileType = "png";
     log("writeToFile: first: " + pathFromSplit);
     log("writeToFile: fileType: " + fileType);
     String thumbailPath = pathFromSplit + fileType;
