@@ -40,17 +40,21 @@ public class ThumbnailFromVideoPathPlugin implements FlutterPlugin, MethodCallHa
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("generateThumbnail")) {
       final Map<String, Object> args = call.arguments();
-      log("method handler called with args: " + args);
-      Object width = args.get("width");
-      Object height = args.get("height");
-      Object path = args.get("path");
+      log("onMethodCall: called with args: " + args);
+      int width = (int) args.get("width");
+      int height = (int) args.get("height");
+      String path = (String) args.get("path");
 
-      if (call.arguments == null || width != null || height != null || path != null) {
-        result.error("Path error", "Please add a path, width and height", "");
+      log("onMethodCall: width: "  + width);
+      log("onMethodCall: height: "  + height);
+      log("onMethodCall: path: "  + path);
+
+      if (call.arguments == null) {
+        result.error("error", "path: " + path + ", height: " + height + "and width: " + width, "");
         return;
       }
 
-      String thumbnailPath = generateThumbnail(path.toString(), (int) height, (int) width);
+      String thumbnailPath = generateThumbnail(path, height, width);
       if (thumbnailPath == null) {
         result.error("thumbnail error", "For some reason thumbnail could not be generated", "");
         return;
