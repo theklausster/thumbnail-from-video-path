@@ -128,35 +128,24 @@ public class ThumbnailFromVideoPathPlugin implements FlutterPlugin, MethodCallHa
 
   private String writeToFile(String path, byte[] bytes) {
     log("writeToFile: trying to write to file");
-    final String ext = "png";
-    final int i = path.lastIndexOf(".");
-    String fullpath = path.substring(0, i + 1) + ext;
 
-    if (path != null) {
-      if (path.endsWith(ext)) {
-        fullpath = path;
-      } else {
-        final int index = fullpath.lastIndexOf("/");
-
-        if (path.endsWith("/")) {
-          fullpath = path + fullpath.substring(index + 1);
-        } else {
-          fullpath = path + fullpath.substring(index);
-        }
-      }
-    }
-
+    String pathFromSplit = path.split(".")[0];
+    String fileType = ".png";
+    log("writeToFile: first: " + pathFromSplit);
+    log("writeToFile: fileType: " + fileType);
+    String thumbailPath = pathFromSplit + fileType;
+    log("writeToFile: thumbnailPath: " + thumbailPath);
     try {
       log("writeToFile: trying to write to file");
-      FileOutputStream f = new FileOutputStream(fullpath);
+      FileOutputStream f = new FileOutputStream(thumbailPath);
       f.write(bytes);
       f.close();
-      log("writeToFile: success. Path is: " + fullpath);
+      log("writeToFile: success. Path is: " + thumbailPath);
     } catch (java.io.IOException e) {
-      log("writeToFile: error:" +  e.getStackTrace());
+      log("writeToFile: error:" +  e);
       return null;
     }
-    return fullpath;
+    return thumbailPath;
   }
 
   void log(String log) {
